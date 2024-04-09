@@ -1,0 +1,10 @@
+# Ignore artifacts:
+bin
+cache
+dist
+node_modules
+obj
+tmp
+
+# Ignore files by extension:
+**/*.md

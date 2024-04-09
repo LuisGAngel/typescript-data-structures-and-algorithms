@@ -1,0 +1,24 @@
+{
+    "name": "nodets",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "execute": "node ./dist/index.js",
+        "start": "npm run build && npm run execute",
+        "test": "jest"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^20.12.4",
+        "eslint": "^8.57.0",
+        "jest": "^29.7.0",
+        "node": "^18.20.1",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.4"
+    }
+}

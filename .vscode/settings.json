@@ -1,0 +1,12 @@
+{
+    "editor.renderWhitespace": "all",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "eslint.onIgnoredFiles": "warn",
+    "eslint.workingDirectories": ["src"],
+    "eslint.probe": ["javascript", "typescript"],
+    "prettier.ignorePath": ".prettierignore",
+    "prettier.configPath": ".prettierrc.cjs",
+    "rewrap.wrappingColumn": 100
+}
