@@ -1,9 +1,0 @@
-module.exports = {
-    extends: ["eslint:recommended"],
-    parserOptions: {
-        ecmaVersion: 2021,
-    },
-    rules: {
-        // Your custom rules here
-    },
-};

@@ -8,5 +8,6 @@
     "eslint.probe": ["javascript", "typescript"],
     "prettier.ignorePath": ".prettierignore",
     "prettier.configPath": ".prettierrc.cjs",
-    "rewrap.wrappingColumn": 100
+    "rewrap.wrappingColumn": 100,
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
