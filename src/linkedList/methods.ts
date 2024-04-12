@@ -1,5 +1,21 @@
 import { SinglyLinkedListNode } from "./index.js";
 
+export function toString<T>(root: SinglyLinkedListNode<T> | null): string {
+    if (!root) {
+        return "null";
+    }
+
+    let listString = "";
+    let current: SinglyLinkedListNode<T> | null = root;
+
+    while (current !== null) {
+        listString += `${current.value} => `;
+        current = current.next;
+    }
+
+    return listString + `${current}`;
+}
+
 export function createSinglyLinkedList<T>(array: T[]): SinglyLinkedListNode<T> | null {
     if (array.length < 1) {
         return null;
@@ -9,6 +25,7 @@ export function createSinglyLinkedList<T>(array: T[]): SinglyLinkedListNode<T> |
         value: array[0],
         next: null,
     };
+
     for (let index = 1; index < array.length; index++) {
         addAtEnd(linkedList, array[index]);
     }
@@ -16,21 +33,25 @@ export function createSinglyLinkedList<T>(array: T[]): SinglyLinkedListNode<T> |
     return linkedList;
 }
 
-export function size<T>(root: SinglyLinkedListNode<T>): number {
+export function size<T>(root: SinglyLinkedListNode<T> | null): number {
     if (!root) {
         return 0;
     }
 
-    let count = 1;
-    let current = root;
-    while (current.next !== null) {
+    let count = 0;
+    let current: SinglyLinkedListNode<T> | null = root;
+    while (current !== null) {
         count += 1;
+        current = current.next;
     }
 
     return count;
 }
 
-export function addAtStart<T>(root: SinglyLinkedListNode<T>, element: T): SinglyLinkedListNode<T> {
+export function addAtStart<T>(
+    root: SinglyLinkedListNode<T> | null,
+    element: T,
+): SinglyLinkedListNode<T> {
     const newRoot = {
         value: element,
         next: root,
@@ -38,7 +59,17 @@ export function addAtStart<T>(root: SinglyLinkedListNode<T>, element: T): Singly
     return newRoot;
 }
 
-export function addAtEnd<T>(root: SinglyLinkedListNode<T>, element: T): SinglyLinkedListNode<T> {
+export function addAtEnd<T>(
+    root: SinglyLinkedListNode<T> | null,
+    element: T,
+): SinglyLinkedListNode<T> {
+    if (!root) {
+        return {
+            value: element,
+            next: null,
+        };
+    }
+
     let currentElement = root;
     while (currentElement.next !== null) {
         currentElement = currentElement.next;
@@ -50,42 +81,6 @@ export function addAtEnd<T>(root: SinglyLinkedListNode<T>, element: T): SinglyLi
 }
 
 export function remove<T>(
-    root: SinglyLinkedListNode<T> | null, // 5 3 0
-    element: T, // 6
-): SinglyLinkedListNode<T> | null {
-    if (!root) {
-        return null;
-    }
-
-    // Root matches element
-    if (root.value === element) {
-        const removed = root; // 5
-
-        if (root.next === null) {
-            root = null;
-        } else {
-            root = root.next;
-        }
-        return removed;
-    }
-
-    let previousElement = root; // 6
-    let currentElement = root.next; // 0
-
-    while (currentElement) {
-        if (currentElement.value === element) {
-            const removed = currentElement; // 3
-            previousElement.next = currentElement.next;
-            return removed;
-        }
-        previousElement = currentElement;
-        currentElement = currentElement.next;
-    }
-
-    return null;
-}
-
-export function search<T>(
     root: SinglyLinkedListNode<T> | null,
     element: T,
 ): SinglyLinkedListNode<T> | null {
@@ -93,16 +88,61 @@ export function search<T>(
         return null;
     }
 
+    // Look for element at root
     if (root.value === element) {
+        if (root.next === null) {
+            root = null;
+        } else {
+            root = root.next;
+        }
         return root;
     }
 
-    let current = root;
-    while (current.next !== null) {
+    let previousElement = root;
+    let currentElement = root.next;
+    // Look for element in the middle or end
+    while (currentElement) {
+        if (currentElement.value === element) {
+            previousElement.next = currentElement.next;
+            return root;
+        }
+        previousElement = currentElement;
+        currentElement = currentElement.next;
+    }
+
+    return root;
+}
+
+export function includes<T>(root: SinglyLinkedListNode<T> | null, element: T): boolean {
+    if (!root) {
+        return false;
+    }
+
+    let current: SinglyLinkedListNode<T> | null = root;
+    while (current !== null) {
         if (current.value === element) {
-            return current;
+            return true;
         }
         current = current.next;
     }
-    return null;
+    return false;
+}
+// 1 2 3 4 5
+export function getMiddle<T>(root: SinglyLinkedListNode<T> | null): SinglyLinkedListNode<T> | null {
+    if (!root) {
+        return null;
+    }
+
+    let slow: SinglyLinkedListNode<T> | null = root; // 3
+    let fast: SinglyLinkedListNode<T> | null = root; // 5
+    while (fast !== null) {
+        if (fast.next !== null && fast.next.next !== null) {
+            fast = fast.next.next;
+            // Asserting as slow can't be null as per condition above
+            slow = slow.next as SinglyLinkedListNode<T>;
+        } else {
+            fast = null;
+        }
+    }
+    return slow;
 }
