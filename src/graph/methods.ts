@@ -13,18 +13,17 @@ export function breadthFirstSearch<T>(adjacencyList: AdjacencyList<T>, initialNo
     if (!adjacencyList.get(initialNode)) return [];
 
     const queue = [initialNode];
-    const visited = new Set<T>();
+    const visited = new Set<T>([initialNode]);
 
     while (queue.length > 0) {
         // Assert T, queue.shift() can not be undefined given queue.length > 0
         const value = queue.shift() as T;
-
-        if (!visited.has(value)) {
-            visited.add(value);
-            // Assert T[], adjacencyList.get(value) can not be undefined given that value
-            // always comes from the queue
-            const neighbors = adjacencyList.get(value) as T[];
-            for (const neighbor of neighbors) {
+        // Assert T[], adjacencyList.get(value) can not be undefined given that value
+        // always comes from the queue
+        const neighbors = adjacencyList.get(value) as T[];
+        for (const neighbor of neighbors) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
                 queue.push(neighbor);
             }
         }
@@ -42,18 +41,17 @@ export function depthFirstSearch<T>(adjacencyList: AdjacencyList<T>, initialNode
     if (!adjacencyList.get(initialNode)) return [];
 
     const stack = [initialNode]; // 4, 5
-    const visited = new Set<T>(); // 3
+    const visited = new Set<T>([initialNode]); // 3
 
     while (stack.length > 0) {
-        // Assert T, queue.pop() can not be undefined given queue.length > 0
-        const value = stack.pop() as T; // 3
-
-        if (!visited.has(value)) {
-            visited.add(value);
-            // Assert T[], adjacencyList.get(value) can not be undefined given that value
-            // always comes from the queue
-            const neighbors = adjacencyList.get(value) as T[];
-            for (const neighbor of neighbors) {
+        // Assert T, queue.shift() can not be undefined given queue.length > 0
+        const value = stack.pop() as T;
+        // Assert T[], adjacencyList.get(value) can not be undefined given that value
+        // always comes from the queue
+        const neighbors = adjacencyList.get(value) as T[];
+        for (const neighbor of neighbors) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
                 stack.push(neighbor);
             }
         }
