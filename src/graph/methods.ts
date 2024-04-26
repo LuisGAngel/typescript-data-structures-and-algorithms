@@ -59,3 +59,48 @@ export function depthFirstSearch<T>(adjacencyList: AdjacencyList<T>, initialNode
 
     return Array.from(visited);
 }
+
+export function findShortestPath<T>(adjacencyList: AdjacencyList<T>, start: T, end: T): T[] {
+    if (adjacencyList.size === 0) {
+        return [];
+    }
+
+    const queue = [start];
+    const visited = new Set<T>([start]);
+    // Map contains a node in the key and the previous node in the value from the traversal of the
+    // graph
+    const previous = new Map<T, T>();
+
+    // Breadth first search
+    while (queue.length > 0) {
+        const value = queue.shift() as T;
+
+        for (const neighbor of adjacencyList.get(value) as T[]) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push(neighbor);
+                // Populate the previous node
+                previous.set(neighbor, value);
+            }
+        }
+    }
+
+    return reconstructPath(previous, start, end);
+}
+
+function reconstructPath<T>(previous: Map<T, T>, start: T, end: T): T[] {
+    const path: T[] = [end];
+    let current: T = end;
+    let validPathExists = true;
+    while (current !== start && validPathExists) {
+        const previousOrUndefined = previous.get(current);
+        if (previousOrUndefined !== undefined) {
+            path.push(previousOrUndefined);
+            current = previousOrUndefined;
+        } else {
+            validPathExists = false;
+        }
+    }
+
+    return validPathExists ? path.reverse() : [];
+}
