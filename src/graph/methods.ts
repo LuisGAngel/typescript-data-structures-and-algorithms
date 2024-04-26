@@ -88,7 +88,7 @@ export function findShortestPath<T>(adjacencyList: AdjacencyList<T>, start: T, e
     return reconstructPath(previous, start, end);
 }
 
-function reconstructPath<T>(previous: Map<T, T>, start: T, end: T): T[] {
+export function reconstructPath<T>(previous: Map<T, T>, start: T, end: T): T[] {
     const path: T[] = [end];
     let current: T = end;
     let validPathExists = true;

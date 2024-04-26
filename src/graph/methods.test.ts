@@ -1,4 +1,4 @@
-import { createAdjacencyList, findShortestPath } from "./methods.js";
+import { createAdjacencyList, findShortestPath, reconstructPath } from "./methods.js";
 
 describe("graph.methods", function () {
     describe("findShortestPath", function () {
@@ -22,6 +22,29 @@ describe("graph.methods", function () {
         });
         test("should return empty array if graph is disjoint", () => {
             expect(findShortestPath(adjacencyList, 10, Number.MAX_SAFE_INTEGER)).toEqual([]);
+        });
+    });
+
+    describe("reconstructPath", function () {
+        const previous = new Map([
+            [1, 10],
+            [9, 10],
+            [8, 1],
+            [0, 9],
+            [1, 8],
+            [7, 0],
+            [1, 0],
+            [2, 12],
+            [3, 7],
+            [6, 7],
+            [4, 3],
+            [5, 6],
+        ]);
+        test("should return the shortest path between two nodes", () => {
+            expect(reconstructPath(previous, 10, 4)).toEqual([10, 9, 0, 7, 3, 4]);
+        });
+        test("should return empty array if graph is disjoint", () => {
+            expect(reconstructPath(previous, 10, Number.MAX_SAFE_INTEGER)).toEqual([]);
         });
     });
 });
