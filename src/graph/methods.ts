@@ -104,3 +104,140 @@ export function reconstructPath<T>(previous: Map<T, T>, start: T, end: T): T[] {
 
     return validPathExists ? path.reverse() : [];
 }
+
+// This problem demonstrates graph theory on grids. The dungeon problem: The dungeon has a size of R
+// x C and you're provided by a point Start and a point Exit. A cell full of rock is indicated by a
+// "#" and empty cells respresented by ".". Find the shortest path between the start and the exit
+// point.
+// Sample dungeon
+// [S . . # . . .]
+// [. # . . . # .]
+// [. # . . . . .]
+// [. . # # . . .]
+// [# . # E . # .]
+// start [0, 0]
+// end [4, 3]
+export function findShortestPathToExit(
+    dungeon: string[][],
+    start: [number, number],
+    end: [number, number],
+): [number, number][] {
+    const numberOfRows = dungeon.length;
+    const numberOfColumns = dungeon[0].length;
+    const maxIndexOfRows = numberOfRows - 1;
+    const maxIndexOfColumns = numberOfColumns - 1;
+    const minIndexOfRows = 0;
+    const minIndexOfColumns = 0;
+    const [startRow, startColumn] = start;
+    const [endRow, endColumn] = end;
+
+    // Check if start point is out of boundaries
+    if (
+        startRow < minIndexOfRows ||
+        startRow > maxIndexOfRows ||
+        startColumn < minIndexOfColumns ||
+        startColumn > maxIndexOfColumns
+    ) {
+        return [];
+    }
+
+    // Check if end point is out of boundaries
+    if (
+        endRow < minIndexOfRows ||
+        endRow > maxIndexOfRows ||
+        endColumn < minIndexOfColumns ||
+        endColumn > maxIndexOfColumns
+    ) {
+        return [];
+    }
+
+    // Check if start or end points are rocks
+    if (dungeon[startRow][startColumn] === "#" || dungeon[endRow][endColumn] == "#") {
+        return [];
+    }
+
+    const queue: [number, number][] = [start];
+    const visited: boolean[][] = Array.from({ length: numberOfRows }, () =>
+        Array.from({ length: numberOfColumns }, () => false),
+    );
+    visited[startRow][startColumn] = true;
+    const previous: ([number, number] | undefined)[][] = Array.from({ length: numberOfRows }, () =>
+        Array.from({ length: numberOfColumns }, () => undefined),
+    );
+
+    while (queue.length > 0) {
+        const [currentRow, currentColumn] = queue.shift() as [number, number];
+
+        // Check north
+        if (
+            currentRow - 1 >= minIndexOfRows &&
+            currentRow - 1 <= maxIndexOfRows &&
+            currentColumn >= minIndexOfColumns &&
+            currentColumn <= maxIndexOfColumns &&
+            dungeon[currentRow - 1][currentColumn] === "." &&
+            visited[currentRow - 1][currentColumn] === false
+        ) {
+            visited[currentRow - 1][currentColumn] = true;
+            queue.push([currentRow - 1, currentColumn]);
+            previous[currentRow - 1][currentColumn] = [currentRow, currentColumn];
+        }
+        // Check east
+        if (
+            currentRow >= minIndexOfRows &&
+            currentRow <= maxIndexOfRows &&
+            currentColumn + 1 >= minIndexOfColumns &&
+            currentColumn + 1 <= maxIndexOfColumns &&
+            dungeon[currentRow][currentColumn + 1] === "." &&
+            visited[currentRow][currentColumn + 1] === false
+        ) {
+            visited[currentRow][currentColumn + 1] = true;
+            queue.push([currentRow, currentColumn + 1]);
+            previous[currentRow][currentColumn + 1] = [currentRow, currentColumn];
+        }
+        // Check south
+        if (
+            currentRow + 1 >= minIndexOfRows &&
+            currentRow + 1 <= maxIndexOfRows &&
+            currentColumn >= minIndexOfColumns &&
+            currentColumn <= maxIndexOfColumns &&
+            dungeon[currentRow + 1][currentColumn] === "." &&
+            visited[currentRow + 1][currentColumn] === false
+        ) {
+            visited[currentRow + 1][currentColumn] = true;
+            queue.push([currentRow + 1, currentColumn]);
+            previous[currentRow + 1][currentColumn] = [currentRow, currentColumn];
+        }
+        // Check west
+        if (
+            currentRow >= minIndexOfRows &&
+            currentRow <= maxIndexOfRows &&
+            currentColumn - 1 >= minIndexOfColumns &&
+            currentColumn - 1 <= maxIndexOfColumns &&
+            dungeon[currentRow][currentColumn - 1] === "." &&
+            visited[currentRow][currentColumn - 1] === false
+        ) {
+            visited[currentRow][currentColumn - 1] = true;
+            queue.push([currentRow, currentColumn - 1]);
+            previous[currentRow][currentColumn - 1] = [currentRow, currentColumn];
+        }
+    }
+
+    // Reconstruct path if exists
+    const path: [number, number][] = [[endRow, endColumn]];
+    let currentRow = endRow;
+    let currentColumn = endColumn;
+    let validPathExists = true;
+    while ((currentRow !== startRow || currentColumn !== startColumn) && validPathExists) {
+        const previousOrUndefined = previous[currentRow][currentColumn];
+        if (previousOrUndefined !== undefined) {
+            const [previousRow, previousColumn] = previousOrUndefined;
+            path.push([previousRow, previousColumn]);
+            currentRow = previousRow;
+            currentColumn = previousColumn;
+        } else {
+            validPathExists = false;
+        }
+    }
+
+    return validPathExists ? path.reverse() : [];
+}

@@ -1,4 +1,9 @@
-import { createAdjacencyList, findShortestPath, reconstructPath } from "./methods.js";
+import {
+    createAdjacencyList,
+    findShortestPath,
+    reconstructPath,
+    findShortestPathToExit,
+} from "./methods.js";
 
 describe("graph.methods", function () {
     describe("findShortestPath", function () {
@@ -24,6 +29,53 @@ describe("graph.methods", function () {
             expect(findShortestPath(adjacencyList, 10, Number.MAX_SAFE_INTEGER)).toEqual([]);
         });
     });
+    describe("findShortestPathToExit", function () {
+        const dungeon = [
+            [".", ".", ".", "#", ".", ".", "."],
+            [".", "#", ".", ".", ".", "#", "."],
+            [".", "#", ".", ".", ".", ".", "."],
+            [".", ".", "#", "#", ".", ".", "."],
+            ["#", ".", "#", ".", ".", "#", "."],
+        ];
+        test("should return the shortest path to exit", () => {
+            expect(findShortestPathToExit(dungeon, [0, 0], [4, 3])).toEqual([
+                [0, 0],
+                [0, 1],
+                [0, 2],
+                [1, 2],
+                [1, 3],
+                [1, 4],
+                [2, 4],
+                [3, 4],
+                [4, 4],
+                [4, 3],
+            ]);
+        });
+        test("should return empty path if start point is out of boundaries", () => {
+            expect(
+                findShortestPathToExit(
+                    dungeon,
+                    [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
+                    [4, 3],
+                ),
+            ).toEqual([]);
+        });
+        test("should return empty path if end point is out of boundaries", () => {
+            expect(
+                findShortestPathToExit(
+                    dungeon,
+                    [0, 0],
+                    [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
+                ),
+            ).toEqual([]);
+        });
+        test("should return empty path if start point is a rock", () => {
+            expect(findShortestPathToExit(dungeon, [0, 3], [4, 3])).toEqual([]);
+        });
+        test("should return empty path if end point is a rock", () => {
+            expect(findShortestPathToExit(dungeon, [0, 0], [4, 0])).toEqual([]);
+        });
+    });
 
     describe("reconstructPath", function () {
         const previous = new Map([
@@ -40,7 +92,7 @@ describe("graph.methods", function () {
             [4, 3],
             [5, 6],
         ]);
-        test("should return the shortest path between two nodes", () => {
+        test("should return the reconstructed path", () => {
             expect(reconstructPath(previous, 10, 4)).toEqual([10, 9, 0, 7, 3, 4]);
         });
         test("should return empty array if graph is disjoint", () => {
