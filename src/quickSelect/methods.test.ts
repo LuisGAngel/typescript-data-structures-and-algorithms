@@ -33,7 +33,7 @@ describe("quickSelect.methods", function () {
         });
     });
 
-    describe.only("findLargestKthValue", function () {
+    describe("findLargestKthValue", function () {
         const array = [3, 2, 1, 5, 6, 4];
         const startOfArray = 0;
         const endOfArray = array.length - 1;
