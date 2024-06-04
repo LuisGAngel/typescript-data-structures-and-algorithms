@@ -1,6 +1,6 @@
 import { binarySearch } from "./methods.js";
 
-describe.only("binarySearch.methods", function () {
+describe("binarySearch.methods", function () {
     describe("binarySearch", function () {
         const array = [12, 23, 45, 56, 90, 100];
         const startOfArray = 0;
