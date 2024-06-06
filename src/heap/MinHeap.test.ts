@@ -1,7 +1,7 @@
 import { MinHeap } from "./MinHeap.js";
 
-describe.only("heap", function () {
-    describe.only("MinHeap.add", function () {
+describe("heap", function () {
+    describe("MinHeap.add", function () {
         const minHeap = new MinHeap();
         const inputElements = [48, 86, 1, 15, 71, 3, 28, 31, 40, 70];
 
@@ -16,20 +16,26 @@ describe.only("heap", function () {
 
     describe("MinHeap.pop", function () {
         const minHeap = new MinHeap();
-        const inputElements = [48, 86, 1, 15, 71, 3, 28, 31, 40, 70];
+        // Sort input elements randomly
+        const inputElements = [48, 86, 1, 15, 71, 3, 28, 31, 40, 70].sort(
+            () => Math.random() - 0.5,
+        );
         const outputElements: number[] = [];
 
+        // Add random elements one by one
         for (const element of inputElements) {
             minHeap.add(element);
         }
 
+        // Pop elements one by one
         while (minHeap.length > 0) {
             outputElements.push(minHeap.pop());
         }
 
         it("pops elements in correct order", () => {
             expect(minHeap.length).toEqual(0);
-            expect(outputElements).toEqual(inputElements.sort());
+            // Given min heap property popped elements should be in order from small to big
+            expect(outputElements).toEqual(inputElements.sort((a, b) => a - b));
         });
     });
 

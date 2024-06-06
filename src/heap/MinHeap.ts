@@ -6,7 +6,7 @@
 // array: [10, 15, 20, 17 , 25]
 export class MinHeap {
     public length: number = 0;
-    private heap: number[] = [];
+    public heap: number[] = [];
 
     constructor() {}
 
@@ -29,12 +29,13 @@ export class MinHeap {
     }
 
     public add(element: number): void {
-        this.heap[this.length] = element;
-        this.length++;
+        this.heap[this.length] = element; // heap[0] = 5 // heap[1] = 10 // heap[2] = 1
+        this.length++; // 1 // 2 // 3
         this.heapifyUp();
     }
 
     private heapifyUp(): void {
+        // We start with the last element
         let currentIndex = this.length - 1;
         while (
             this.hasParent(currentIndex) &&
@@ -79,7 +80,7 @@ export class MinHeap {
     }
 
     private hasParent(index: number): boolean {
-        return this.getParentIndex(index) > 0;
+        return this.getParentIndex(index) >= 0;
     }
 
     private hasLeftChild(index: number): boolean {

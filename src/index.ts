@@ -1,9 +1,20 @@
-import { main as treeMain } from "./binaryTree/index.js";
-import { main as linkedListMain } from "./linkedList/index.js";
-import { main as graphMain } from "./graph/index.js";
+import { MinHeap } from "./heap/MinHeap.js";
 
-// treeMain();
+const minHeap = new MinHeap();
+console.log(minHeap.heap);
 
-// linkedListMain();
+minHeap.add(5);
+console.log(minHeap.heap);
 
-graphMain();
+minHeap.add(9);
+console.log(minHeap.heap);
+
+minHeap.add(1);
+console.log(minHeap.heap);
+
+//       1
+//      / \
+//     9   5
+//    / \
+//   x   x
+// array: [1, 9, 5]
