@@ -67,6 +67,26 @@ export class MinHeap {
         }
     }
 
+    public printHeap(index = 0, prefix = "", isTail = true): void {
+        if (index < this.heap.length) {
+            const left = 2 * index + 1;
+            const right = 2 * index + 2;
+
+            // Print right subtree
+            if (right < this.heap.length) {
+                this.printHeap(right, prefix + (isTail ? "│   " : "    "), false);
+            }
+
+            // Print current node
+            console.log(prefix + (isTail ? "└── " : "┌── ") + this.heap[index]);
+
+            // Print left subtree
+            if (left < this.heap.length) {
+                this.printHeap(left, prefix + (isTail ? "    " : "│   "), true);
+            }
+        }
+    }
+
     private getParentIndex(index: number): number {
         return Math.floor((index - 1) / 2);
     }

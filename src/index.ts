@@ -1,20 +1,10 @@
 import { MinHeap } from "./heap/MinHeap.js";
 
 const minHeap = new MinHeap();
-console.log(minHeap.heap);
+const inputElements = [48, 86, 1, 15, 71, 3, 28, 31, 40, 70];
 
-minHeap.add(5);
-console.log(minHeap.heap);
+for (const element of inputElements) {
+    minHeap.add(element);
+}
 
-minHeap.add(9);
-console.log(minHeap.heap);
-
-minHeap.add(1);
-console.log(minHeap.heap);
-
-//       1
-//      / \
-//     9   5
-//    / \
-//   x   x
-// array: [1, 9, 5]
+minHeap.printHeap();

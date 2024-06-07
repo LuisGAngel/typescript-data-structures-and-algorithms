@@ -42,12 +42,14 @@ describe("heap", function () {
     describe("MinHeap.peek", function () {
         const minHeap = new MinHeap();
         const inputElements = [48, 86, 1, 15, 71, 3, 28, 31, 40, 70];
+        const minElement = Math.min(...inputElements);
 
         for (const element of inputElements) {
             minHeap.add(element);
-            it("returns the first without removing it", () => {
-                expect(minHeap.peek()).toEqual(element);
-            });
         }
+
+        it("returns the first element without removing it", () => {
+            expect(minHeap.peek()).toEqual(minElement);
+        });
     });
 });
